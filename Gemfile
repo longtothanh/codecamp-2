@@ -34,6 +34,7 @@ gem "bootsnap", require: false
 # Use Active Storage variants [https://guides.rubyonrails.org/active_storage_overview.html#transforming-images]
 # gem "image_processing", "~> 1.2"
 
+gem "devise"
 gem "bootstrap"
 gem "jquery-rails"
 gem "sassc-rails"
@@ -54,7 +55,7 @@ group :development do
   gem "web-console"
 
   # Highlight the fine-grained location where an error occurred [https://github.com/ruby/error_highlight]
-  gem "error_highlight", ">= 0.4.0", platforms: [:ruby]
+  # gem "error_highlight", ">= 0.4.0", platforms: [:ruby]
 end
 
 group :test do
