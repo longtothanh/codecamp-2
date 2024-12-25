@@ -8,6 +8,21 @@ Rails.application.routes.draw do
 
   namespace :admin do
     root to: "dashboard#index", as: :root
+    resources :test_management, except: [:show] do
+      member do
+        get :new_question
+        post :create_question
+        get :edit_question
+        patch :update_question
+        delete :destroy_question
+
+        get :new_answer
+        post :create_answer
+        get :edit_answer
+        patch :update_answer
+        delete :destroy_answer
+      end
+    end
   end
 
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
