@@ -1,17 +1,14 @@
 <div class="container-flouid">
-  <nav class="navbar navbar-expand-lg bg-light">
+  <nav class="navbar navbar-expand-lg">
     <div class="container">
       <a class="navbar-brand" href="/">
-        <h3>Codecamp</h3>
+        <h3 style="color: rgb(255 237 213)">Codecamp</h3>
       </a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
       <% if user_signed_in? %>
-        <%= button_to "Logout", destroy_user_session_path, method: :delete, class: "btn btn-danger" %>
-      <% else %>
-        <%= link_to "Sign in", new_user_session_path, class: "btn btn-info" %>
-        <%= link_to "Sign up", new_user_registration_path, class: "btn btn-primary" %>
+        <%= button_to "Logout", destroy_user_session_path, method: :delete, style:"background-color: #f97316", class: "btn" %>
       <% end %>
       <%# <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">

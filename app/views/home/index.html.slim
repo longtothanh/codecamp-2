@@ -1,1 +1,8 @@
-h1 Chào mừng đến với trang bài kiểm tra
+div
+  .container
+    div.intro-container
+      h1.intro-title Chào mừng đến với trang làm bài kiểm tra
+      h3.intro-subtitle Đăng nhập hoặc đăng ký để bắt đầu
+      div.action-buttons
+        = link_to "Đăng nhập", new_user_session_path, class: "btn"
+        = link_to "Đăng ký", new_user_registration_path, class: "btn"
