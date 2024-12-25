@@ -38,6 +38,7 @@ gem "devise"
 gem "bootstrap"
 gem "jquery-rails"
 gem "sassc-rails"
+gem "slim-rails", require: true
 
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem

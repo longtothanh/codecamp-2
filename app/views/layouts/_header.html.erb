@@ -7,6 +7,12 @@
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
+      <% if user_signed_in? %>
+        <%= button_to "Logout", destroy_user_session_path, method: :delete, class: "btn btn-danger" %>
+      <% else %>
+        <%= link_to "Sign in", new_user_session_path, class: "btn btn-info" %>
+        <%= link_to "Sign up", new_user_registration_path, class: "btn btn-primary" %>
+      <% end %>
       <%# <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
           <li class="nav-item">
