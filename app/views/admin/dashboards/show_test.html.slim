@@ -1,3 +1,6 @@
 h1 = @test.title
 
-= render "new_question"
+div style="display: flex; justify-content: space-between; align-items: center"
+  div style="width: 50%; border-right: 1px solid"
+    = render "new_question"
+    = render "new_answer"

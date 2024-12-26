@@ -1,6 +1,4 @@
 class Admin::DashboardsController < Admin::BaseController
-  # before_action :set_test
-
   def index
     @tests = Test.all
   end
@@ -36,15 +34,45 @@ class Admin::DashboardsController < Admin::BaseController
     @question = Question.new
   end
 
+  def create_question
+    binding.pry
+    @question = Question.new(question_params)
+    # if Test.exists?(title: params[:title])
+    #   flash[:alert] = "Tiêu đề bài kiểm tra đã tồn tại. Vui lòng chọn tiêu đề khác."
+    #   redirect_to admin_root_path, notice: "Tên bài kiểm tra đã tồn tại!"
+    #   return
+    # end
+    if @test.save
+      redirect_to admin_root_path, notice: "Bài kiểm tra đã được tạo thành công."
+    end
+  end
+
+  def edit_question
+
+  end
+
+  def update_question
+
+  end
+
+  def destroy_question
+
+  end
+
+  # Answers
+  def new_answer
+    @answer = Answer.new
+  end
+
+  def create_answer; end
+
   private
 
   def test_params
     params.permit(:title, :description)
   end
 
-  # def set_test
-  #   @test = Test.find(params[:id])
-  # rescue ActiveRecord::RecordNotFound
-  #   redirect_to admin_dashboard_index_path, alert: "Bài kiểm tra không tồn tại."
-  # end
+  def question_params
+    params.permit(:content)
+  end
 end

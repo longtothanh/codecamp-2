@@ -17,6 +17,13 @@ Rails.application.routes.draw do
         delete :destroy_test
 
         get :new_question
+        post :create_question
+        get :edit_question, path: 'edit_question/:id'
+        patch :update_question
+        delete :destroy_question
+
+        get :new_answer
+        post :create_answer
       end
     end
     root to: "dashboards#index", as: :root
