@@ -1,0 +1,22 @@
+h1 Admin dashboard
+div style="display: flex; justify-content: space-between; align-items: center"
+  div style="width: 50%"
+    = render "new_test"
+  div style="width: 50%; padding: 3.5rem 2rem"
+    h1.text-center style="margin-bottom: 4rem" Danh sách bài kiểm tra
+    table.table-bordered.table-hover
+      thead
+        tr
+          th.p-3 ID
+          th.p-3 Tiêu đề
+          th.p-3 Mô tả
+          th.p-3 Ngày tạo
+          th.p-3 Chi tiết
+      tbody
+        - @tests.each do |test|
+          tr
+            td.p-3 = test.id
+            td.p-3 = truncate(test.title, length: 30)
+            td.p-3 = truncate(test.description, length: 50)
+            td.p-3 = test.created_at.strftime("%d/%m/%Y")
+            td.p-3 = link_to "Detail", show_test_admin_dashboards_path(test), class: "btn btn-warning"
