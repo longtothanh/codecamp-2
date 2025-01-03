@@ -1,6 +1,10 @@
-h1 = @test.title
+h1 Chi tiết bài kiểm tra
 
 div style="display: flex; justify-content: space-between; align-items: center"
   div style="width: 50%; border-right: 1px solid"
     = render "new_question"
     = render "new_answer"
+    / div#answer-form-container
+  div style="width: 50%"
+    .text-example style="padding: 3.5rem 2rem;"
+      = render "test_example"

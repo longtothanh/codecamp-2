@@ -1,21 +1,43 @@
-.login-container
-  .container.p-5
-    h1.text-center.login-title Tạo mới câu trả lời
-    .row.justify-content-center
-      .col-md-12
-        = form_with(url: create_answer_admin_dashboards_path, local: true, id: "question-form", html: { class: "login-form-test" }) do |f|
-          h2 Tạo câu trả lời
-          .form-group
-            = f.label :content, "Nội dung câu trả lời 1", class: "form-label"
-            = text_field_tag "question[contents][]", nil, class: "form-control question-input", placeholder: "Nội dung câu trả lời ..."
+#answer-form
+  .login-container
+    .container.p-5
+      h1.text-center.login-title Tạo mới câu trả lời
+      .row.justify-content-center
+        .col-md-12
+          = form_with(url: create_answer_admin_dashboards_path, local: true, id: "question-form", html: { class: "login-form-test" }) do |f|
+            h2 Tạo câu trả lời
+            .form-group
+              = f.label :content, "Nội dung câu trả lời 1", class: "form-label"
+              = text_field_tag "question[contents][]", nil, class: "form-control question-input", placeholder: "Nội dung câu trả lời ..."
 
-            = f.label :content, "Nội dung câu trả lời 2", class: "form-label mt-2"
-            = text_field_tag "question[contents][]", nil, class: "form-control question-input", placeholder: "Nội dung câu trả lời ..."
+              = f.label :content, "Nội dung câu trả lời 2", class: "form-label mt-2"
+              = text_field_tag "question[contents][]", nil, class: "form-control question-input", placeholder: "Nội dung câu trả lời ..."
 
-            div#additional-answers
+              div#additional-answers
 
-          .form-group
-            = button_tag "Thêm câu trả lời", type: "button", id: "add-answer", class: "btn btn-lg btn-submit mt-3"
+            .form-group
+              = button_tag "Thêm câu trả lời", type: "button", id: "add-answer", class: "btn btn-lg btn-submit mt-3"
 
-          = f.submit "Tạo câu hỏi", class: "btn btn-submit mt-3"
+            = f.submit "Tạo câu hỏi", class: "btn btn-submit mt-3"
 
+javascript:
+  document.addEventListener("DOMContentLoaded", () => {
+    const questionForm = document.getElementById("question-form");
+
+    if (questionForm) {
+      questionForm.addEventListener("ajax:success", (event) => {
+        const [data, _status, _xhr] = event.detail;
+
+        if (data.success) {
+          const container = document.getElementById("answer-form-container");
+          container.innerHTML = data.form; // Hiển thị form tạo answer
+        } else {
+          alert("Lỗi: " + data.errors.join(", "));
+        }
+      });
+
+      questionForm.addEventListener("ajax:error", (_event) => {
+        alert("Đã xảy ra lỗi khi gửi dữ liệu.");
+      });
+    }
+  });

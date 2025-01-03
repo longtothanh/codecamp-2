@@ -24,6 +24,8 @@ Rails.application.routes.draw do
 
         get :new_answer
         post :create_answer
+
+        get :test_example
       end
     end
     root to: "dashboards#index", as: :root

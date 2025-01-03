@@ -4,6 +4,7 @@
     .row.justify-content-center
       .col-md-12
         = form_with(model: @question, url: create_question_admin_dashboards_path, local: true, html: { class: "login-form-test" }) do |f|
+          = f.hidden_field :test_id, value: @test.id
           .form-group
             = f.label :content, nil, class: "form-label"
             = f.text_area :content, class: "form-control"
