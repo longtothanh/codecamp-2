@@ -1,0 +1,15 @@
+.login-container
+  .container
+    h1.text-center.login-title Tạo mới bài kiểm tra
+    .row.justify-content-center
+      .col-md-12
+        = form_with(model: @test, url: create_test_admin_dashboards_path, local: true, html: { class: "login-form-test" }) do |f|
+          .form-group
+            = f.label :title, nil, class: "form-label"
+            = f.text_field :title, class: "form-control"
+
+          .form-group
+            = f.label :description, nil, class: "form-label"
+            = f.text_area :description, class: "form-control", style: "height: 300px"
+
+          = f.submit "Tạo mới", class: "btn btn-lg btn-submit mt-3"
