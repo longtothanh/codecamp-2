@@ -37,14 +37,20 @@ class Admin::DashboardsController < Admin::BaseController
 
   def create_question
     @question = Question.new(question_params)
-    binding.pry
     if @question.save
-      redirect_to show_test_admin_dashboards_path(@question.test_id), notice: "Câu hỏi đã được thêm thành công."
-      # render json: {
-      #   partial: (render_to_string partial: 'new_answer', collection: @question, as: :question, layout: false)
-      # }
+      @answer = Answer.new
+      render json: {
+        html: render_to_string(
+          partial: "new_answer",
+          locals: { answer: @answer },
+          formats: [:html]
+        )
+      }
     else
-      redirect_to new_question_admin_dashboards_path(test_id: @question.test_id)
+      respond_to do |format|
+        format.js { render partial: "error_message", locals: { errors: @question.errors.full_messages } } # Render lỗi nếu cần
+        format.html { render :new }
+      end
     end
   end
 
@@ -62,30 +68,16 @@ class Admin::DashboardsController < Admin::BaseController
 
   # Answers
   def new_answer
-    @question = Question.find(params[:question_id])
+    # @question = Question.find(params[:question_id])
     @answer = Answer.new
   end
 
   def create_answer
-    @answer = Answer.new(answer_params)
-    if @answer.save
-      redirect_to new_question_admin_dashboards_path(@answer.question)
-    else
-      render new_answer
+    contents = answer_params[:content]
+    contents.each do |content|
+      @answer = Answer.create(content: content, question_id: answer_params[:question_id])
     end
-  end
-
-  def ajax_answer_form
-    @question = Question.new(question_params)
-    # binding.pry
-    # if @question.save
-    #   redirect_to show_test_admin_dashboards_path(@question.test_id), notice: "Câu hỏi đã được thêm thành công."
-    # else
-    #   redirect_to new_question_admin_dashboards_path(test_id: @question.test_id)
-    # end
-    render json: {
-      partial: (render_to_string partial: 'new_answer', collection: @question, as: :question, layout: false)
-    }
+    end
   end
 
   private
@@ -99,6 +91,6 @@ class Admin::DashboardsController < Admin::BaseController
   end
 
   def answer_params
-    params.permit(:content, :correct, :question_id)
+    params.require(:answer).permit(:question_id, content: [])
   end
 end
