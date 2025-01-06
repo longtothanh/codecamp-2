@@ -40,7 +40,7 @@ class Admin::DashboardsController < Admin::BaseController
     if @question.save
       @answer = Answer.new
       render json: {
-        html: render_to_string(partial: "new_answer", locals: { answer: @answer }, formats: [:html], layout: false)
+        html: render_to_string( partial: "new_answer", locals: { answer: @answer }, formats: [ :html ], layout: false )
       }
     else
       respond_to do |format|
@@ -50,17 +50,11 @@ class Admin::DashboardsController < Admin::BaseController
     end
   end
 
-  def edit_question
+  def edit_question; end
 
-  end
+  def update_question; end
 
-  def update_question
-
-  end
-
-  def destroy_question
-
-  end
+  def destroy_question; end
 
   # Answers
   def new_answer

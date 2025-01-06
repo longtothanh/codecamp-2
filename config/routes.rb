@@ -7,7 +7,7 @@ Rails.application.routes.draw do
   end
 
   namespace :admin do
-    resource :dashboards, only: [:index] do
+    resource :dashboards, only: [ :index ] do
       member do
         get :new_test
         get :show_test, path: 'show_test/:id'
