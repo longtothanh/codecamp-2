@@ -40,11 +40,7 @@ class Admin::DashboardsController < Admin::BaseController
     if @question.save
       @answer = Answer.new
       render json: {
-        html: render_to_string(
-          partial: "new_answer",
-          locals: { answer: @answer },
-          formats: [:html]
-        )
+        html: render_to_string(partial: "new_answer", locals: { answer: @answer }, formats: [:html], layout: false)
       }
     else
       respond_to do |format|
@@ -74,10 +70,9 @@ class Admin::DashboardsController < Admin::BaseController
 
   def create_answer
     contents = answer_params[:content]
-    contents.each do |content|
-      @answer = Answer.create(content: content, question_id: answer_params[:question_id])
-    end
-    end
+    # contents.each do |content|
+    #   @answer = Answer.create(content: content, question_id: answer_params[:question_id])
+    # end
   end
 
   private

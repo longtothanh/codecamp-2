@@ -1,19 +1,18 @@
-#answer-form
-  = form_with(model: @answer, url: create_answer_admin_dashboards_path, local: true, id: "answer-form", remote: true, html: { class: "login-form-test" }) do |f|
-    = f.hidden_field :question_id, value: @question.id
-    .form-group
-      = f.label :content, "Nội dung câu trả lời 1", class: "form-label"
-      = text_field_tag "answer[content][]", nil, class: "form-control question-input", placeholder: "Nội dung câu trả lời ..."
+= form_with(model: @answer, url: create_answer_admin_dashboards_path, local: true, html: { class: "login-form-test" }) do |f|
+  = f.hidden_field :question_id, value: @question.id
+  .form-group
+    = f.label :content, "Nội dung câu trả lời 1", class: "form-label"
+    = text_field_tag "answer[content][]", nil, class: "form-control question-input", placeholder: "Nội dung câu trả lời ..."
 
-      = f.label :content, "Nội dung câu trả lời 2", class: "form-label mt-2"
-      = text_field_tag "answer[content][]", nil, class: "form-control question-input", placeholder: "Nội dung câu trả lời ..."
+    = f.label :content, "Nội dung câu trả lời 2", class: "form-label mt-2"
+    = text_field_tag "answer[content][]", nil, class: "form-control question-input", placeholder: "Nội dung câu trả lời ..."
 
-      div#additional-answers
+    div#additional-answers
 
-    .form-group
-      = button_tag "Thêm câu trả lời", type: "button", id: "add-answer", class: "btn btn-lg btn-submit mt-3"
+  .form-group
+    = button_tag "Thêm câu trả lời", type: "button", id: "add-answer", class: "btn btn-lg btn-submit mt-3"
 
-    = f.submit "Tạo câu hỏi", class: "btn btn-submit mt-3"
+  = f.submit "Tạo câu hỏi", class: "btn btn-submit mt-3"
 
 javascript:
   document.addEventListener("DOMContentLoaded", () => {

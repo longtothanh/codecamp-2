@@ -6,7 +6,7 @@ div style="display: flex; justify-content: space-between; align-items: center"
       .container
         h1.text-center.login-title Tạo mới câu hỏi
         .row.justify-content-center
-          .col-md-12
+          .col-md-8
             = form_with(model: @question, url: create_question_admin_dashboards_path, id: "question-form", local: true, html: { class: "login-form-test" }) do |f|
               = f.hidden_field :test_id, value: @test.id
               .form-group
@@ -19,7 +19,8 @@ div style="display: flex; justify-content: space-between; align-items: center"
     .container.p-5
       h1.text-center.login-title Tạo mới câu trả lời
       .row.justify-content-center
-        .col-md-12
+        .col-md-8
+          // Call ajax for render new_answer when submit create question
           #answer-form
   div style="width: 50%"
     .text-example style="padding: 3.5rem 2rem;"
