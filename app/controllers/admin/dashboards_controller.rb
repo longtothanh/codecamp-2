@@ -64,9 +64,24 @@ class Admin::DashboardsController < Admin::BaseController
 
   def create_answer
     contents = answer_params[:content]
-    # contents.each do |content|
-    #   @answer = Answer.create(content: content, question_id: answer_params[:question_id])
-    # end
+    correct_answers = answer_params[:correct] || []
+
+    # Gán giá trị mặc định false nếu không có trong params
+    corrected_answers_with_defaults = contents.map.with_index do |content, index|
+      {
+        content: content,
+        correct: correct_answers[index].present? ? false : true,
+        question_id: answer_params[:question_id]
+      }
+    end
+
+    contents.each do |content|
+      corrected_answers_with_defaults.each do |correct|
+        if correct[:content] == content
+          @answer = Answer.create(content: content, question_id: answer_params[:question_id], correct: correct[:correct])
+        end
+      end
+    end
   end
 
   private
@@ -80,6 +95,6 @@ class Admin::DashboardsController < Admin::BaseController
   end
 
   def answer_params
-    params.require(:answer).permit(:question_id, content: [])
+    params.require(:answer).permit(:question_id, content: [], correct: [])
   end
 end

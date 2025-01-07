@@ -1,5 +1,5 @@
 function addAnswerFunction() {
-    const addAnswerButton = $("#add-answer");
+	const addAnswerButton = $("#add-answer");
 	const additionalAnswerContainer = $("#additional-answers");
 	let answerCount = 0;
 	const maxAnswers = 3;
@@ -14,16 +14,39 @@ function addAnswerFunction() {
 			// Tạo mới ô input
 			const newAnswerInput = $("<input>");
 			newAnswerInput.attr("type", "text");
-			newAnswerInput.attr("name", "question[content][]");
+			newAnswerInput.attr("name", "answer[content][]");
 			newAnswerInput.attr("class", "form-control question-input");
 			newAnswerInput.attr(
 				"placeholder",
-				`Nội dung câu trả lời ${answerCount + 2}`
+				`Nội dung câu trả lời ${answerCount + 3}`
 			);
+			const hiddenField = $('<input>', {
+				type: 'hidden',
+				name: 'answer[correct][]',
+				value: false,
+				id: `hidden-correct-answer-${answerCount + 3}`
+			});
+			const checkbox = $('<input>', {
+				type: 'checkbox',
+				name: 'answer[correct][]',
+				value: true,
+				class: 'form-check-input',
+				id: `correct-answer-${answerCount + 3}`
+			});
+			checkbox.on("change", function() {
+				let hiddenFieldId = $(this).context.id;
+        let hiddenField = $("#hidden-" + hiddenFieldId);
+        if ($(this).is(":checked")) {
+        	hiddenField.prop("disabled", true);
+        } else {
+         	hiddenField.prop("disabled", false);
+        }
+			})
 
 			// Thêm label và ô input vào container
 			additionalAnswerContainer.append(newAnswerLabel);
 			additionalAnswerContainer.append(newAnswerInput);
+			additionalAnswerContainer.append(hiddenField, checkbox);
 			answerCount += 1;
 		} else {
 			addAnswerButton.prop("disabled", true);
@@ -37,22 +60,22 @@ $(function() {
     $("#question-form").on("submit", function (e) {
 		e.preventDefault();
 		const formData = $("#question-form").serialize();
-        const actionUrl = $("#question-form").attr('action');
-        $.ajax({
-            url: actionUrl,
-            method: 'POST',
-            data: formData,
-            success: function (response) {
-                if (response.html) {
-					$("#answer-form").append(response.html);
-                    addAnswerFunction();
-				} else {
-					alert("Không nhận được dữ liệu từ server!");
-				}
-            },
-            error: function (xhr) {
-                alert("Lỗi: " + xhr.responseJSON.error.join(", "));
-            },
-        });
+		const actionUrl = $("#question-form").attr('action');
+		$.ajax({
+				url: actionUrl,
+				method: 'POST',
+				data: formData,
+				success: function (response) {
+					if (response.html) {
+						$("#answer-form").append(response.html);
+						addAnswerFunction();
+					} else {
+						alert("Không nhận được dữ liệu từ server!");
+					}
+				},
+				error: function (xhr) {
+						alert("Lỗi: " + xhr.responseJSON.error.join(", "));
+				},
+		});
 	});
 })

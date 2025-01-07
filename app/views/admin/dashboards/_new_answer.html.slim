@@ -3,9 +3,17 @@
   .form-group
     = f.label :content, "Nội dung câu trả lời 1", class: "form-label"
     = text_field_tag "answer[content][]", nil, class: "form-control question-input", placeholder: "Nội dung câu trả lời ..."
+    .form-check
+      = hidden_field_tag "answer[correct][]", false, id: "hidden-correct-answer-1"
+      = check_box_tag "answer[correct][]", true, false, id: "correct-answer-1", class: "form-check-input"
+      = label_tag "correct-answer-1", "Câu trả lời đúng?", class: "form-check-label"
 
     = f.label :content, "Nội dung câu trả lời 2", class: "form-label mt-2"
     = text_field_tag "answer[content][]", nil, class: "form-control question-input", placeholder: "Nội dung câu trả lời ..."
+    .form-check
+      = hidden_field_tag "answer[correct][]", false, id: "hidden-correct-answer-2"
+      = check_box_tag "answer[correct][]", true, false, id: "correct-answer-2", class: "form-check-input"
+      = label_tag "correct-answer-2", "Câu trả lời đúng?", class: "form-check-label"
 
     div#additional-answers
 
@@ -15,23 +23,16 @@
   = f.submit "Tạo câu hỏi", class: "btn btn-submit mt-3"
 
 javascript:
-  document.addEventListener("DOMContentLoaded", () => {
-    const questionForm = document.getElementById("question-form");
-
-    if (questionForm) {
-      questionForm.addEventListener("ajax:success", (event) => {
-        const [data, _status, _xhr] = event.detail;
-
-        if (data.success) {
-          const container = document.getElementById("answer-form-container");
-          container.innerHTML = data.form; // Hiển thị form tạo answer
+  $(function() {
+    $(".form-check-input").each(function () {
+      $(this).on("change", function () {
+        let hiddenFieldId = $(this).context.id;
+        let hiddenField = $("#hidden-" + hiddenFieldId);
+        if ($(this).is(":checked")) {
+        	hiddenField.prop("disabled", true);
         } else {
-          alert("Lỗi: " + data.errors.join(", "));
+         	hiddenField.prop("disabled", false);
         }
       });
-
-      questionForm.addEventListener("ajax:error", (_event) => {
-        alert("Đã xảy ra lỗi khi gửi dữ liệu.");
-      });
-    }
-  });
+	  });
+  })
