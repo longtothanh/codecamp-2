@@ -9,10 +9,13 @@ class Admin::DashboardsController < Admin::BaseController
 
   def show_test
     @test = Test.find(params[:id])
-    @question = Question.find_by(test_id: @test.id)
+    @question = Question.new
     @questions = Question.where(test_id: @test.id)
+
     if @questions.present?
-      @answers = Answer.where(question_id: @question.id)
+      @questions.each do |question|
+        @answers = Answer.where(question_id: question.id)
+      end
     end
   end
 
@@ -35,10 +38,12 @@ class Admin::DashboardsController < Admin::BaseController
   def destroy_test; end
 
   # Questions
-  def new_question; end
+  def new_question
+    @question = Question.new
+  end
 
   def create_question
-    @question = Question.new(question_params)
+    @question = Question.new(content: params[:question][:content], test_id: params[:question][:test_id])
     if @question.save
       @answer = Answer.new
       render json: {
@@ -77,6 +82,9 @@ class Admin::DashboardsController < Admin::BaseController
       )
       @answer.save
     end
+
+    test_id = Question.find_by(id: @answer.question_id).test_id
+    redirect_to show_test_admin_dashboards_path(id: test_id), notice: "Answers created successfully."
   end
 
   private

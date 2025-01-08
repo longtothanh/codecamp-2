@@ -56,8 +56,8 @@ function addAnswerFunction() {
 }
 
 $(function() {
-    // Khi thực hiện action submit để tạo question thì sẽ hiển thị answer form
-    $("#question-form").on("submit", function (e) {
+	// Khi thực hiện action submit để tạo question thì sẽ hiển thị answer form
+	$("#question-form").on("submit", function (e) {
 		e.preventDefault();
 		const formData = $("#question-form").serialize();
 		const actionUrl = $("#question-form").attr('action');
@@ -69,7 +69,6 @@ $(function() {
 				if (response.html) {
 					$("#answer-form").append(response.html);
 					addAnswerFunction();
-					$("#question_content").val("");
 				} else {
 					alert("Không nhận được dữ liệu từ server!");
 				}
