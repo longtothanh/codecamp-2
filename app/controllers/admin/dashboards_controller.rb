@@ -9,8 +9,11 @@ class Admin::DashboardsController < Admin::BaseController
 
   def show_test
     @test = Test.find(params[:id])
-    @question = Question.new(test_id: @test.id)
+    @question = Question.find_by(test_id: @test.id)
     @questions = Question.where(test_id: @test.id)
+    if @questions.present?
+      @answers = Answer.where(question_id: @question.id)
+    end
   end
 
   def create_test
@@ -32,8 +35,7 @@ class Admin::DashboardsController < Admin::BaseController
   def destroy_test; end
 
   # Questions
-  def new_question
-  end
+  def new_question; end
 
   def create_question
     @question = Question.new(question_params)
@@ -44,7 +46,7 @@ class Admin::DashboardsController < Admin::BaseController
       }
     else
       respond_to do |format|
-        format.js { render partial: "error_message", locals: { errors: @question.errors.full_messages } } # Render lỗi nếu cần
+        format.js { render partial: "error_message", locals: { errors: @question.errors.full_messages } }
         format.html { render :new }
       end
     end
@@ -58,7 +60,6 @@ class Admin::DashboardsController < Admin::BaseController
 
   # Answers
   def new_answer
-    # @question = Question.find(params[:question_id])
     @answer = Answer.new
   end
 
@@ -66,21 +67,15 @@ class Admin::DashboardsController < Admin::BaseController
     contents = answer_params[:content]
     correct_answers = answer_params[:correct] || []
 
-    # Gán giá trị mặc định false nếu không có trong params
-    corrected_answers_with_defaults = contents.map.with_index do |content, index|
-      {
-        content: content,
-        correct: correct_answers[index].present? ? false : true,
-        question_id: answer_params[:question_id]
-      }
-    end
+    contents.each_with_index do |content, index|
+      is_correct = correct_answers[index]
 
-    contents.each do |content|
-      corrected_answers_with_defaults.each do |correct|
-        if correct[:content] == content
-          @answer = Answer.create(content: content, question_id: answer_params[:question_id], correct: correct[:correct])
-        end
-      end
+      @answer = Answer.create(
+        content: content,
+        question_id: answer_params[:question_id],
+        correct: is_correct
+      )
+      @answer.save
     end
   end
 
@@ -91,7 +86,7 @@ class Admin::DashboardsController < Admin::BaseController
   end
 
   def question_params
-    params.require(:question).permit(:content, :test_id)
+    params.permit(:content, :test_id)
   end
 
   def answer_params

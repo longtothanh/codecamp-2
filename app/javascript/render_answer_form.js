@@ -62,20 +62,21 @@ $(function() {
 		const formData = $("#question-form").serialize();
 		const actionUrl = $("#question-form").attr('action');
 		$.ajax({
-				url: actionUrl,
-				method: 'POST',
-				data: formData,
-				success: function (response) {
-					if (response.html) {
-						$("#answer-form").append(response.html);
-						addAnswerFunction();
-					} else {
-						alert("Không nhận được dữ liệu từ server!");
-					}
-				},
-				error: function (xhr) {
-						alert("Lỗi: " + xhr.responseJSON.error.join(", "));
-				},
+			url: actionUrl,
+			method: 'POST',
+			data: formData,
+			success: function (response) {
+				if (response.html) {
+					$("#answer-form").append(response.html);
+					addAnswerFunction();
+					$("#question_content").val("");
+				} else {
+					alert("Không nhận được dữ liệu từ server!");
+				}
+			},
+			error: function (xhr) {
+					alert("Lỗi: " + xhr.responseJSON.error.join(", "));
+			},
 		});
 	});
 })
