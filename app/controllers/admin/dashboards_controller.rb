@@ -70,17 +70,19 @@ class Admin::DashboardsController < Admin::BaseController
 
   def create_answer
     contents = answer_params[:content]
-    correct_answers = answer_params[:correct] || []
+    correct_answers = answer_params[:correct].to_i
+
 
     contents.each_with_index do |content, index|
-      is_correct = correct_answers[index]
+      is_correct = (index == correct_answers)
 
       @answer = Answer.create(
         content: content,
         question_id: answer_params[:question_id],
         correct: is_correct
-      )
+        )
       @answer.save
+      binding.pry
     end
 
     test_id = Question.find_by(id: @answer.question_id).test_id
@@ -98,6 +100,6 @@ class Admin::DashboardsController < Admin::BaseController
   end
 
   def answer_params
-    params.require(:answer).permit(:question_id, content: [], correct: [])
+    params.require(:answer).permit(:question_id, { content: [] }, :correct)
   end
 end

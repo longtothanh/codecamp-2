@@ -20,33 +20,22 @@ function addAnswerFunction() {
 				"placeholder",
 				`Nội dung câu trả lời ${answerCount + 3}`
 			);
-			const hiddenField = $('<input>', {
-				type: 'hidden',
-				name: 'answer[correct][]',
-				value: false,
-				id: `hidden-correct-answer-${answerCount + 3}`
+			const radioButton = $('<input>', {
+				type: 'radio',
+				name: 'answer[correct]',
+				value: 0,
+				id: 'correct-answer-1',
+				class: 'form-check-input'
 			});
-			const checkbox = $('<input>', {
-				type: 'checkbox',
-				name: 'answer[correct][]',
-				value: true,
-				class: 'form-check-input',
-				id: `correct-answer-${answerCount + 3}`
-			});
-			checkbox.on("change", function() {
-				let hiddenFieldId = $(this).context.id;
-        let hiddenField = $("#hidden-" + hiddenFieldId);
-        if ($(this).is(":checked")) {
-        	hiddenField.prop("disabled", true);
-        } else {
-         	hiddenField.prop("disabled", false);
-        }
+
+			radioButton.on("change", function() {
+				console.log("Thành Long");
 			})
 
 			// Thêm label và ô input vào container
 			additionalAnswerContainer.append(newAnswerLabel);
 			additionalAnswerContainer.append(newAnswerInput);
-			additionalAnswerContainer.append(hiddenField, checkbox);
+			additionalAnswerContainer.append(radioButton);
 			answerCount += 1;
 		} else {
 			addAnswerButton.prop("disabled", true);

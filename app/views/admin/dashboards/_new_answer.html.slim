@@ -4,15 +4,13 @@
     = f.label :content, "Nội dung câu trả lời 1", class: "form-label"
     = text_field_tag "answer[content][]", nil, class: "form-control question-input", placeholder: "Nội dung câu trả lời ..."
     .form-check
-      = hidden_field_tag "answer[correct][]", false, id: "hidden-correct-answer-1"
-      = check_box_tag "answer[correct][]", true, false, id: "correct-answer-1", class: "form-check-input"
+      = radio_button_tag "answer[correct]", 0, false, id: "correct-answer-1", class: "form-check-input"
       = label_tag "correct-answer-1", "Câu trả lời đúng?", class: "form-check-label"
 
     = f.label :content, "Nội dung câu trả lời 2", class: "form-label mt-2"
     = text_field_tag "answer[content][]", nil, class: "form-control question-input", placeholder: "Nội dung câu trả lời ..."
     .form-check
-      = hidden_field_tag "answer[correct][]", false, id: "hidden-correct-answer-2"
-      = check_box_tag "answer[correct][]", true, false, id: "correct-answer-2", class: "form-check-input"
+      = radio_button_tag "answer[correct]", 1, false, id: "correct-answer-2", class: "form-check-input"
       = label_tag "correct-answer-2", "Câu trả lời đúng?", class: "form-check-label"
 
     div#additional-answers
