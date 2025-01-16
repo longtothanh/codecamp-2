@@ -37,7 +37,11 @@ class Admin::DashboardsController < Admin::BaseController
 
   def update_test; end
 
-  def destroy_test; end
+  def destroy_test
+    test = Test.find_by(id: params[:id])
+    test.destroy
+    redirect_to admin_root_path, notice: "Bài kiểm tra đã xóa thành công."
+  end
 
   # Questions
   def new_question
@@ -103,6 +107,6 @@ class Admin::DashboardsController < Admin::BaseController
   end
 
   def answer_params
-    params.require(:answer).permit(:question_id, answers: [:content, :correct])
+    params.require(:answer).permit(:question_id, answers: [ :content, :correct ])
   end
 end

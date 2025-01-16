@@ -14,7 +14,7 @@ Rails.application.routes.draw do
         post :create_test
         get :edit_test
         patch :update_test
-        delete :destroy_test
+        delete :destroy_test, path: 'destroy_test/:id'
 
         get :new_question
         post :create_question
