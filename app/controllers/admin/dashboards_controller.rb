@@ -12,9 +12,11 @@ class Admin::DashboardsController < Admin::BaseController
     @question = Question.new
     @questions = Question.where(test_id: @test.id)
 
+    @answers_by_question = {}
+
     if @questions.present?
       @questions.each do |question|
-        @answers = Answer.where(question_id: question.id)
+        @answers_by_question[question.id] = Answer.where(question_id: question.id)
       end
     end
   end
@@ -61,7 +63,11 @@ class Admin::DashboardsController < Admin::BaseController
 
   def update_question; end
 
-  def destroy_question; end
+  def destroy_question
+    test = Question.find_by(id: params[:id]).test
+    Question.find_by(id: params[:id]).destroy
+    redirect_to show_test_admin_dashboards_path(test), notice: "Answers created successfully."
+  end
 
   # Answers
   def new_answer
@@ -69,20 +75,17 @@ class Admin::DashboardsController < Admin::BaseController
   end
 
   def create_answer
-    contents = answer_params[:content]
+    contents = answer_params[:answers]
     correct_answers = answer_params[:correct].to_i
 
 
-    contents.each_with_index do |content, index|
-      is_correct = (index == correct_answers)
-
+    contents.each do |answer|
       @answer = Answer.create(
-        content: content,
+        content: answer[:content],
         question_id: answer_params[:question_id],
-        correct: is_correct
+        correct: answer[:correct].to_i
         )
       @answer.save
-      binding.pry
     end
 
     test_id = Question.find_by(id: @answer.question_id).test_id
@@ -100,6 +103,6 @@ class Admin::DashboardsController < Admin::BaseController
   end
 
   def answer_params
-    params.require(:answer).permit(:question_id, { content: [] }, :correct)
+    params.require(:answer).permit(:question_id, answers: [:content, :correct])
   end
 end

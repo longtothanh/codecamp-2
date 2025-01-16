@@ -20,7 +20,7 @@ Rails.application.routes.draw do
         post :create_question
         get :edit_question, path: 'edit_question/:id'
         patch :update_question
-        delete :destroy_question
+        delete :destroy_question, path: 'destroy_question/:id'
 
         get :new_answer
         post :create_answer

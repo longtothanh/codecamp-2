@@ -3,7 +3,7 @@ div.d-flex.justify-content-between
   = link_to "Quay về dashboard", admin_root_path, class: "btn btn-warning p-2 d-flex align-items-center"
 
 div style="display: flex; justify-content: space-between; align-items: center"
-  div style="width: 50%; border-right: 1px solid" class="form-content"
+  div style="width: 50%" class="form-content"
     .login-container
       .container
         h1.text-center.login-title Tạo mới câu hỏi
@@ -17,7 +17,6 @@ div style="display: flex; justify-content: space-between; align-items: center"
 
               = f.submit "Tạo mới", class: "btn btn-lg btn-submit mt-3"
 
-    .login-container
     .container.p-5
       h1.text-center.login-title Tạo mới câu trả lời
       .row.justify-content-center
@@ -25,5 +24,5 @@ div style="display: flex; justify-content: space-between; align-items: center"
           // Call ajax for render new_answer when submit create question
           #answer-form
   div style="width: 50%"
-    .text-example style="padding: 3.5rem 2rem;"
+    .text-example style="padding: 3.5rem 2rem"
       = render "test_example"

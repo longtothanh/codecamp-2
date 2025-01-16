@@ -1,8 +1,13 @@
-h1.text-center =@test.title
-- @questions.each do |question|
-  p.mt-3 = question.content
-  - @answers.each do |answer|
-    .form-check
-      input.form-check-input type="radio" name="answer" value=answer.id disabled=true
-      label.form-check-label = answer.content
+h1.text-center = @test.title
 
+- @questions.each do |question|
+  div.d-flex.justify-content-between.align-items-center
+    p.mt-3 = question.content
+    = button_to "Xóa", destroy_question_admin_dashboards_path(id: question.id), method: :delete, style:"background-color: #f97316", class: "btn"
+  - if @answers_by_question[question.id].present?
+    - @answers_by_question[question.id].each do |answer|
+      .form-check
+        input.form-check-input type="radio" name="answer" value=answer.id disabled=true
+        label.form-check-label = answer.content
+  - else
+    p Không có câu trả lời nào cho câu hỏi này.
