@@ -3,6 +3,12 @@ Rails.application.routes.draw do
   devise_for :users
 
   namespace :user do
+    resource :dashboards, only: [ :index ] do
+      member do
+        get :show, path: 'show/:id'
+        post :submit, path: 'submit/:id'
+      end
+    end
     root to: "dashboards#index", as: :root
   end
 

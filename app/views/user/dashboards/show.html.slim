@@ -1,0 +1,28 @@
+h1.text-center = @test.title
+.container
+  .row
+    .col-md-12
+      .text-center
+        h2
+          i Thời gian còn lại: &nbsp;
+          span#timer 00:00
+      = form_with url: submit_user_dashboards_path(@test.id), id: "do_test", method: :post, local: true, data: { turbo: false } do |f|
+        - @questions.each_with_index do |question, index|
+          .question-container.mt-4
+            h3 Câu #{index + 1}: #{question.content}
+
+            - question.answers.each do |answer|
+              .form-check
+                = f.radio_button "test[#{question.id}][answer_id]", answer.id, id: "answer-#{answer.id}", class: "form-check-input"
+                = f.label "answer-#{answer.id}", answer.content, class: "form-check-label"
+
+            .mt-2
+              button.btn.btn-info.btn-sm type="button" data-clear="clear-question-#{question.id}" Xóa lựa chọn
+
+        .text-center.mt-4
+          = f.submit "Nộp bài", id:"submit-do-test", class: "btn btn-success mx-2"
+          = link_to "Quay về trang dashboard", user_root_path, id: "back-to-user-dashboard", class: "btn btn-warning"
+
+    .col-md-6
+      .mt-3
+        #result
