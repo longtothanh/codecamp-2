@@ -38,4 +38,10 @@ $(function () {
     localStorage.removeItem(timerKey);
     clearInterval(countdown);
   });
+
+  $("#back-to-user-dashboard").on("click", function () {
+    alert("Bạn có muốn quay về trang dashboard không? Bài kiểm tra không được lưu lại!");
+    localStorage.removeItem(timerKey);
+    clearInterval(countdown);
+  });
 });
