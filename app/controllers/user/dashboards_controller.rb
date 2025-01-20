@@ -10,16 +10,17 @@ class User::DashboardsController < User::BaseController
 
   def submit
     submitted_answers = params[:test]
-    @score = 0;
+    @correct_answers = 0;
     submitted_answers.each do |question_id, answer_id|
       question = Question.find(question_id.to_i)
       question.answers.each do |answer|
         if answer.id == answer_id["answer_id"].to_i && answer.correct
-          @score += 1
+          @correct_answers += 1
         end
       end
     end
-    @total_questions = Question.where(test_id: params[:id]).count
+    @total_questions = submitted_answers.keys.size
+    @score = ((@correct_answers.to_f / @total_questions) * 10).round(2)
     render json: {
       html: render_to_string( partial: "result", locals: { total_questions: @total_questions, score: @score }, formats: [ :html ], layout: false )
     }

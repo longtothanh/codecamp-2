@@ -1,4 +1,5 @@
 .container.text-center
-  h3 Số đáp án đúng là #{@score}/#{@total_questions}
+  h3 Số đáp án đúng là #{@correct_answers}/#{@total_questions}
+  h3 Điểm số là #{@score}
   = link_to "Làm lại bài kiểm tra", user_dashboards_path(id: params[:id]), class: "btn btn-info mx-2"
   = link_to "Quay về dashboard", user_root_path, id: "back-to-user-dashboard", class: "btn btn-primary"

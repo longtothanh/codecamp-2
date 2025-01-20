@@ -6,7 +6,7 @@ h1.text-center = @test.title
         h2
           i Thời gian còn lại: &nbsp;
           span#timer 00:00
-      = form_with url: submit_user_dashboards_path(@test.id), id: "do_test", method: :post, local: true, data: { turbo: false } do |f|
+      = form_with url: submit_user_dashboards_path(@test.id), id: "do_test", method: :post, local: true, data: { turbo: false, test_id: @test.id } do |f|
         - @questions.each_with_index do |question, index|
           .question-container.mt-4
             h3 Câu #{index + 1}: #{question.content}

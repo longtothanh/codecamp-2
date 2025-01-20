@@ -7,7 +7,9 @@ $(function () {
     return;
   }
 
-  let timeRemaining = durationInMinutes * 60;
+  const timerKey = `test_timer_${form.data("test-id")}`;
+
+  let timeRemaining = parseInt(localStorage.getItem(timerKey), 10) || durationInMinutes * 60;
 
   function updateTimerDisplay() {
     const minutes = Math.floor(timeRemaining / 60);
@@ -18,13 +20,22 @@ $(function () {
   const countdown = setInterval(function () {
     if (timeRemaining > 0) {
       timeRemaining -= 1;
+
+      localStorage.setItem(timerKey, timeRemaining);
+
       updateTimerDisplay();
     } else {
       clearInterval(countdown);
+      localStorage.removeItem(timerKey);
       alert("Hết giờ! Bài kiểm tra sẽ được nộp tự động.");
       form.submit();
     }
   }, 1000);
 
   updateTimerDisplay();
+
+  form.on("submit", function () {
+    localStorage.removeItem(timerKey);
+    clearInterval(countdown);
+  });
 });
