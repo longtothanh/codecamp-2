@@ -4,6 +4,9 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
 
+  has_many :user_exams, dependent: :destroy
+  has_many :tests, through: :user_exams
+
   self.inheritance_column = :_type_disabled
 
   enum type: { user: 0, admin: 1 }

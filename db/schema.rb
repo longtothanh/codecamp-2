@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2024_12_25_134252) do
+ActiveRecord::Schema[7.2].define(version: 2025_01_21_093634) do
   create_table "answers", force: :cascade do |t|
     t.string "content"
     t.boolean "correct"
@@ -35,6 +35,30 @@ ActiveRecord::Schema[7.2].define(version: 2024_12_25_134252) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "user_answers", force: :cascade do |t|
+    t.integer "user_exam_id", null: false
+    t.integer "question_id", null: false
+    t.integer "answer_id", null: false
+    t.integer "times"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["answer_id"], name: "index_user_answers_on_answer_id"
+    t.index ["question_id"], name: "index_user_answers_on_question_id"
+    t.index ["user_exam_id"], name: "index_user_answers_on_user_exam_id"
+  end
+
+  create_table "user_exams", force: :cascade do |t|
+    t.integer "user_id", null: false
+    t.integer "test_id", null: false
+    t.float "score"
+    t.datetime "start_time"
+    t.datetime "submit_time"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["test_id"], name: "index_user_exams_on_test_id"
+    t.index ["user_id"], name: "index_user_exams_on_user_id"
+  end
+
   create_table "users", force: :cascade do |t|
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
@@ -51,4 +75,9 @@ ActiveRecord::Schema[7.2].define(version: 2024_12_25_134252) do
 
   add_foreign_key "answers", "questions"
   add_foreign_key "questions", "tests"
+  add_foreign_key "user_answers", "answers"
+  add_foreign_key "user_answers", "questions"
+  add_foreign_key "user_answers", "user_exams"
+  add_foreign_key "user_exams", "tests"
+  add_foreign_key "user_exams", "users"
 end
