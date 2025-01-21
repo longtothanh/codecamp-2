@@ -6,9 +6,10 @@ function addAnswerFunction() {
 
   addAnswerButton.on("click", function (e) {
     e.preventDefault();
+
     if (answerCount < maxAnswers) {
       const answerDiv = $("<div>", {
-        class: "answer-container",
+        class: "answer-container mt-3",
       });
 
       const newAnswerLabel = $("<label>", {
@@ -16,15 +17,13 @@ function addAnswerFunction() {
         text: `Nội dung câu trả lời ${answerCount + 3}`,
       });
 
-      // Tạo mới ô input
       const newAnswerInput = $("<input>", {
         type: "text",
         name: "answer[answers][][content]",
-        class: "form-control question-input",
+        class: "form-control answer-input",
         placeholder: `Nội dung câu trả lời ${answerCount + 3}`,
       });
 
-      // Tạo mới hidden field
       const hiddenField = $("<input>", {
         type: "hidden",
         name: "answer[answers][][correct]",
@@ -32,7 +31,6 @@ function addAnswerFunction() {
         id: `hidden-correct-answer-${answerCount + 3}`,
       });
 
-      // Tạo mới ô radio
       const radioButton = $("<input>", {
         type: "radio",
         name: "answer[answers][][correct]",
@@ -41,44 +39,68 @@ function addAnswerFunction() {
         class: "form-check-input",
       });
 
-      // Xử lý sự kiện click ô radio
-      radioButton.on("change", function () {
-        const hiddenFieldId = $(this).context.id;
-        const hiddenField = $(`#hidden-${hiddenFieldId}`);
-        if ($(this).is(":checked")) {
-          hiddenField.prop("disabled", true);
-        } else {
-          hiddenField.prop("disabled", false);
-        }
+      const deleteButton = $("<button>", {
+        type: "button",
+        class: "btn btn-danger btn-sm delete-answer my-2 mx-2",
+        text: "Xóa",
       });
 
-      // Tạo label cho radio button
-      const radioLabel = $("<label>", {
-        for: `correct-answer-${answerCount + 3}`,
-        text: "Câu trả lời đúng?",
-        class: "form-check-label ms-2",
+      deleteButton.on("click", function () {
+        answerDiv.remove();
+        answerCount -= 1;
+        if (answerCount < maxAnswers) {
+          addAnswerButton.prop("disabled", false).text("Thêm câu trả lời");
+        }
       });
 
       // Thêm các thành phần vào div
       answerDiv.append(newAnswerLabel);
+      answerDiv.append(deleteButton);
       answerDiv.append(newAnswerInput);
       answerDiv.append(hiddenField);
       answerDiv.append(radioButton);
-      answerDiv.append(radioLabel);
 
-      // Thêm div vào container chính
       additionalAnswerContainer.append(answerDiv);
-
       answerCount += 1;
     } else {
       addAnswerButton.prop("disabled", true);
       addAnswerButton.text("Đã đạt tối đa số câu trả lời");
     }
   });
+
+  // Validate tất cả input trước khi gửi form
+  $("#submit-answers").on("click", function (e) {
+    let isValid = true;
+    $(".answer-input").each(function () {
+      if (!validateInput($(this))) {
+        isValid = false;
+      }
+    });
+
+    if (!isValid) {
+      e.preventDefault();
+      alert("Vui lòng điền đầy đủ nội dung các câu trả lời.");
+    }
+  });
+
+  // Validate input
+  function validateInput(inputElement) {
+    const value = inputElement.val().trim();
+    const errorClass = "is-invalid";
+    const validClass = "is-valid";
+
+    if (value === "") {
+      inputElement.addClass(errorClass).removeClass(validClass);
+      return false;
+    } else {
+      inputElement.removeClass(errorClass).addClass(validClass);
+      return true;
+    }
+  }
 }
 
+
 $(function () {
-  // Khi thực hiện action submit để tạo question thì sẽ hiển thị answer form
   $("#question-form").on("submit", function (e) {
     e.preventDefault();
     const formData = $("#question-form").serialize();

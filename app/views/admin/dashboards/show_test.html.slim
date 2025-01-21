@@ -13,9 +13,9 @@ div style="display: flex; justify-content: space-between; align-items: center"
               = f.hidden_field :test_id, value: @test.id
               .form-group
                 = f.label :content, nil, class: "form-label"
-                = f.text_area :content, class: "form-control"
+                = f.text_area :content, id: "question-content-input", class: "form-control"
 
-              = f.submit "Tạo mới", class: "btn btn-lg btn-submit mt-3"
+              = f.submit "Tạo mới", id: "create-question-button", class: "btn btn-lg btn-submit mt-3"
 
     .container.p-5
       h1.text-center.login-title Tạo mới câu trả lời

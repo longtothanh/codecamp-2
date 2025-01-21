@@ -24,8 +24,7 @@ class Admin::DashboardsController < Admin::BaseController
   def create_test
     @test = Test.new(test_params)
     if Test.exists?(title: params[:title])
-      flash[:alert] = "Tiêu đề bài kiểm tra đã tồn tại. Vui lòng chọn tiêu đề khác."
-      redirect_to admin_root_path, notice: "Tên bài kiểm tra đã tồn tại!"
+      redirect_to admin_root_path, alert: "Tên bài kiểm tra đã tồn tại!"
       return
     end
     if @test.save
@@ -69,8 +68,13 @@ class Admin::DashboardsController < Admin::BaseController
 
   def destroy_question
     test = Question.find_by(id: params[:id]).test
-    Question.find_by(id: params[:id]).destroy
-    redirect_to show_test_admin_dashboards_path(test), notice: "Answers created successfully."
+    question = Question.find_by(id: params[:id])
+
+    if question.destroy
+      redirect_to show_test_admin_dashboards_path(test), notice: "Câu hỏi đã được xóa thành công."
+    else
+      redirect_to show_test_admin_dashboards_path(test), alert: question.errors.full_messages.join(", ")
+    end
   end
 
   # Answers
