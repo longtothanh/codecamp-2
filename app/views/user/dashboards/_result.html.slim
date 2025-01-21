@@ -1,5 +1,23 @@
 .container.text-center
   h3 Số đáp án đúng là #{@correct_answers}/#{@total_questions}
-  h3 Điểm số là #{@score}
+  h3 Điểm số là #{@user_exam.score}
+
+  table.table-bordered.table-hover
+    thead
+      tr
+        th.p-3 Câu hỏi
+        th.p-3 Câu trả lời của bạn
+        th.p-3 Câu trả lời đúng
+    tbody
+      - @user_exam.user_answers.each do |detail|
+        tr
+          td.p-3 = detail.question.content
+          td.p-3 = detail.answer.content
+          td.p-3
+            - if detail.answer.correct
+              span.text-success Đúng
+            - else
+              span.text-danger Sai
+
   = link_to "Làm lại bài kiểm tra", user_dashboards_path(id: params[:id]), class: "btn btn-info mx-2"
   = link_to "Quay về dashboard", user_root_path, id: "back-to-user-dashboard", class: "btn btn-primary"
