@@ -22,3 +22,32 @@ div style="display: flex; justify-content: space-between; align-items: center"
             td.p-3 = test.created_at.strftime("%d/%m/%Y")
             td.p-3 = link_to "Detail", show_test_admin_dashboards_path(test), class: "btn btn-warning"
             td.p-3 = button_to "Delete", destroy_test_admin_dashboards_path(id: test.id), method: :delete, class: "btn btn-danger"
+
+.container
+  h1.text-center.mt-3 Phân phối điểm số
+  .d-flex.justify-content-center.w-100
+    canvas.w-50.h-50.mt-3#scoreChart
+script
+  |
+    document.addEventListener('DOMContentLoaded', () => {
+      const ctx = document.getElementById('scoreChart');
+      const chartData = #{raw @chart_data.to_json};
+
+      if (ctx) {
+        new Chart(ctx, {
+          type: 'pie',
+          data: chartData,
+          options: {
+            responsive: true,
+            plugins: {
+              legend: {
+                position: 'top'
+              },
+              tooltip: {
+                enabled: true
+              }
+            }
+          }
+        });
+      }
+    });

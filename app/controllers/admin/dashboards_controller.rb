@@ -1,6 +1,34 @@
 class Admin::DashboardsController < Admin::BaseController
   def index
     @tests = Test.all
+
+    # ChartJS
+    user_exam_groups = UserExam.group(
+      "CASE
+        WHEN score >= 8 THEN '8 -> 10 điểm'
+        WHEN score >= 5 THEN '5 -> dưới 8 điểm'
+        ELSE '0 -> dưới 5 điểm'
+      END"
+    ).count
+
+    @chart_data = {
+      labels: user_exam_groups.keys,
+      datasets: [{
+        label: 'Phân phối điểm số',
+        data: user_exam_groups.values,
+        backgroundColor: [
+          'rgba(75, 192, 192, 0.6)',
+          'rgba(255, 206, 86, 0.6)',
+          'rgba(255, 99, 132, 0.6)'
+        ],
+        borderColor: [
+          'rgba(75, 192, 192, 1)',
+          'rgba(255, 206, 86, 1)',
+          'rgba(255, 99, 132, 1)'
+        ],
+        borderWidth: 1
+      }]
+    }
   end
 
   def new_test
@@ -85,7 +113,6 @@ class Admin::DashboardsController < Admin::BaseController
   def create_answer
     contents = answer_params[:answers]
     correct_answers = answer_params[:correct].to_i
-
 
     contents.each do |answer|
       @answer = Answer.create(

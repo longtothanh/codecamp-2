@@ -9,7 +9,7 @@ function addAnswerFunction() {
 
     if (answerCount < maxAnswers) {
       const answerDiv = $("<div>", {
-        class: "answer-container mt-3",
+        class: "answer-container",
       });
 
       const newAnswerLabel = $("<label>", {
@@ -39,6 +39,13 @@ function addAnswerFunction() {
         class: "form-check-input",
       });
 
+      // Tạo label cho radio button
+      const radioLabel = $("<label>", {
+        for: `correct-answer-${answerCount + 3}`,
+        text: "Câu trả lời đúng?",
+        class: "form-check-label ms-2",
+      });
+
       const deleteButton = $("<button>", {
         type: "button",
         class: "btn btn-danger btn-sm delete-answer my-2 mx-2",
@@ -59,7 +66,7 @@ function addAnswerFunction() {
       answerDiv.append(newAnswerInput);
       answerDiv.append(hiddenField);
       answerDiv.append(radioButton);
-
+      answerDiv.append(radioLabel);
       additionalAnswerContainer.append(answerDiv);
       answerCount += 1;
     } else {
@@ -77,9 +84,13 @@ function addAnswerFunction() {
       }
     });
 
+    if ($("input[name='answer[answers][][correct]']:checked").length === 0) {
+      isValid = false;
+    }
+
     if (!isValid) {
       e.preventDefault();
-      alert("Vui lòng điền đầy đủ nội dung các câu trả lời.");
+      alert("Vui lòng điền đầy đủ nội dung các câu trả lời và chọn ít nhất một câu trả lời đúng.");
     }
   });
 
@@ -99,10 +110,45 @@ function addAnswerFunction() {
   }
 }
 
+function activateButton(selector) {
+  setTimeout(() => {
+    $(selector).prop("disabled", false);
+  }, 100);
+}
+
+function validate(selector, message) {
+  const field = $(selector);
+  const value = field.val().trim();
+  const errorMessage = message(value);
+
+  if (errorMessage) {
+    if (!field.siblings(".invalid-feedback").length) {
+      field.addClass("is-invalid");
+      field.after(`<div class="invalid-feedback">${errorMessage}</div>`);
+    }
+    return false;
+  } else {
+    field.removeClass("is-invalid");
+    field.siblings(".invalid-feedback").remove();
+    return true;
+  }
+}
 
 $(function () {
   $("#question-form").on("submit", function (e) {
     e.preventDefault();
+    let questionFormValid = true;
+    if (
+      !validate("#question-content-input", (value) => {
+        if (value === "") return "Nội dung câu hỏi không được để trống.";
+        return null;
+      })
+    ) {
+      questionFormValid = false;
+      activateButton("#create-question-button");
+      return;
+    }
+
     const formData = $("#question-form").serialize();
     const actionUrl = $("#question-form").attr("action");
     $.ajax({
