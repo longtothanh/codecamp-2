@@ -1,0 +1,21 @@
+h1 User dashboard
+h2 Danh sách bài kiểm tra
+.container
+  table.table-bordered.table-hover style="width: 100%"
+    thead
+      tr
+        td.p-3 ID
+        td.p-3 Tên bài test
+        td.p-3 Mô tả
+        td.p-3 Số câu hỏi
+        td.p-3 Ngày tạo
+        td.p-3 Làm bài
+    tbody
+      - @tests.each do |test|
+        tr
+          td.p-3 = test.id
+          td.p-3 = test.title
+          td.p-3 = truncate(test.description, length: 50)
+          td.p-3 = test.questions.count
+          td.p-3 = test.created_at.strftime("%d/%m/%Y")
+          td.p-3 = link_to "Do test", user_dashboards_path(id: test.id), class: "btn btn-warning"

@@ -1,0 +1,53 @@
+h1 Admin dashboard
+div style="display: flex; justify-content: space-between; align-items: center"
+  div style="width: 50%"
+    = render "new_test"
+  div style="width: 50%; padding: 3.5rem 2rem"
+    h1.text-center style="margin-bottom: 4rem" Danh sách bài kiểm tra
+    table.table-bordered.table-hover
+      thead
+        tr
+          th.p-3 ID
+          th.p-3 Tiêu đề
+          th.p-3 Mô tả
+          th.p-3 Ngày tạo
+          th.p-3 Chi tiết
+          th.p-3 Xóa
+      tbody
+        - @tests.each do |test|
+          tr
+            td.p-3 = test.id
+            td.p-3 = truncate(test.title, length: 30)
+            td.p-3 = truncate(test.description, length: 50)
+            td.p-3 = test.created_at.strftime("%d/%m/%Y")
+            td.p-3 = link_to "Detail", show_test_admin_dashboards_path(test), class: "btn btn-warning"
+            td.p-3 = button_to "Delete", destroy_test_admin_dashboards_path(id: test.id), method: :delete, class: "btn btn-danger"
+
+.container
+  h1.text-center.mt-3 Phân phối điểm số
+  .d-flex.justify-content-center.w-100
+    canvas.w-50.h-50.mt-3#scoreChart
+script
+  |
+    document.addEventListener('DOMContentLoaded', () => {
+      const ctx = document.getElementById('scoreChart');
+      const chartData = #{raw @chart_data.to_json};
+
+      if (ctx) {
+        new Chart(ctx, {
+          type: 'pie',
+          data: chartData,
+          options: {
+            responsive: true,
+            plugins: {
+              legend: {
+                position: 'top'
+              },
+              tooltip: {
+                enabled: true
+              }
+            }
+          }
+        });
+      }
+    });

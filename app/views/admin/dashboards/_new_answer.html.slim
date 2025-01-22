@@ -1,0 +1,39 @@
+= form_with(model: @answer, url: create_answer_admin_dashboards_path, local: true, html: { class: "login-form-test" }) do |f|
+  = f.hidden_field :question_id, value: @question.id
+
+  .form-group
+    = f.label :content, "Nội dung câu trả lời 1", class: "form-label"
+    = text_field_tag "answer[answers][][content]", nil, class: "form-control answer-input", placeholder: "Nội dung câu trả lời ..."
+    .form-check
+      = hidden_field_tag "answer[answers][][correct]", 0, id: "hidden-correct-answer-1"
+      = radio_button_tag "answer[answers][][correct]", 1, false, id: "correct-answer-1", class: "form-check-input"
+      = label_tag "correct-answer-1", "Câu trả lời đúng?", class: "form-check-label"
+
+    = f.label :content, "Nội dung câu trả lời 2", class: "form-label mt-2"
+    = text_field_tag "answer[answers][][content]", nil, class: "form-control answer-input", placeholder: "Nội dung câu trả lời ..."
+    .form-check
+      = hidden_field_tag "answer[answers][][correct]", 0, id: "hidden-correct-answer-2"
+      = radio_button_tag "answer[answers][][correct]", 1, false, id: "correct-answer-2", class: "form-check-input"
+      = label_tag "correct-answer-1", "Câu trả lời đúng?", class: "form-check-label"
+
+    div#additional-answers
+
+  .form-group
+    = button_tag "Thêm câu trả lời", type: "button", id: "add-answer", class: "btn btn-lg btn-submit mt-3"
+
+  = f.submit "Tạo câu hỏi", class: "btn btn-submit mt-3", id: "submit-answers"
+
+javascript:
+  $(function() {
+    $(".form-check-input").each(function () {
+      $(this).on("change", function () {
+        let hiddenFieldId = $(this).context.id;
+        let hiddenField = $("#hidden-" + hiddenFieldId);
+        if ($(this).is(":checked")) {
+        	hiddenField.prop("disabled", true);
+        } else {
+         	hiddenField.prop("disabled", false);
+        }
+      });
+	  });
+  })

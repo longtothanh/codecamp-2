@@ -3,11 +3,38 @@ Rails.application.routes.draw do
   devise_for :users
 
   namespace :user do
-    root to: "dashboard#index", as: :root
+    resource :dashboards, only: [ :index ] do
+      member do
+        get :show, path: 'show/:id'
+        post :submit, path: 'submit/:id'
+      end
+    end
+    root to: "dashboards#index", as: :root
   end
 
   namespace :admin do
-    root to: "dashboard#index", as: :root
+    resource :dashboards, only: [ :index ] do
+      member do
+        get :new_test
+        get :show_test, path: 'show_test/:id'
+        post :create_test
+        get :edit_test
+        patch :update_test
+        delete :destroy_test, path: 'destroy_test/:id'
+
+        get :new_question
+        post :create_question
+        get :edit_question, path: 'edit_question/:id'
+        patch :update_question
+        delete :destroy_question, path: 'destroy_question/:id'
+
+        get :new_answer
+        post :create_answer
+
+        get :test_example
+      end
+    end
+    root to: "dashboards#index", as: :root
   end
 
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html

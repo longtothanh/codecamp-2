@@ -8,7 +8,7 @@
         <span class="navbar-toggler-icon"></span>
       </button>
       <% if user_signed_in? %>
-        <%= button_to "Logout", destroy_user_session_path, method: :delete, style:"background-color: #f97316", class: "btn" %>
+        <%= button_to "Đăng xuất", destroy_user_session_path, method: :delete, style:"background-color: #f97316", class: "btn" %>
       <% end %>
       <%# <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
